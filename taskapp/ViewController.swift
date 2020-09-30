@@ -10,8 +10,11 @@ import UIKit
 import RealmSwift
 import UserNotifications
 
-class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate {
     @IBOutlet weak var tableView: UITableView!
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     
     let realm = try! Realm()
     
@@ -32,6 +35,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         tableView.delegate  = self
         tableView.dataSource = self
+        //デリゲート先を自分に設定する。
+        searchBar.delegate = self
+        
+        searchBar.enablesReturnKeyAutomatically = false
+
         
         // Do any additional setup after loading the view.
     }
@@ -57,6 +65,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
         
         let dateString:String = formatter.string(from: task.date)
+        cell.detailTextLabel?.text = dateString
         
         return cell
     }
@@ -135,7 +144,37 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         tableView.reloadData()
     }
   
+    
+   
+    
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print("searchbar")
+        searchBar.endEditing(true)
+        
+        // Query using an NSPredicate
+        let predicate = NSPredicate(format: "category = %@", searchBar.text!)
+        taskArray = realm.objects(Task.self).filter(predicate)
+        
+        tableView.reloadData()
+       
+    }
+ 
 
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+            
+        if searchText.isEmpty {
+        
+        
+        //再オブジェクトの取得
+           let Results = realm.objects(Task.self)
+        print("results")
+             
+            taskArray = Results
+        tableView.reloadData()
+        }
+    }
+    
 
 }
 

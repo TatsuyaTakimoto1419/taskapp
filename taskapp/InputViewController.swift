@@ -21,6 +21,9 @@ class InputViewController: UIViewController {
     
     @IBOutlet weak var datePicker: UIDatePicker!
     
+    @IBOutlet weak var categoryField: UITextField!
+    
+    
     var task: Task!
     
     override func viewDidLoad() {
@@ -35,6 +38,7 @@ class InputViewController: UIViewController {
         titleTextField.text = task.title
         contentsTextView.text = task.contents
         datePicker.date = task.date
+        categoryField.text = task.category
         
         // Do any additional setup after loading the view.
     }
@@ -50,6 +54,7 @@ class InputViewController: UIViewController {
             self.task.title = self.titleTextField.text!
             self .task.contents = self.contentsTextView.text
             self.task.date = self.datePicker.date
+            self.task.category = self.categoryField.text!
             
             self.realm.add(self.task, update: .modified)
         }
