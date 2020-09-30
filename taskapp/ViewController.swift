@@ -13,6 +13,7 @@ import UserNotifications
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate {
     @IBOutlet weak var tableView: UITableView!
     
+    
     @IBOutlet weak var searchBar: UISearchBar!
     
     
@@ -76,16 +77,25 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         performSegue(withIdentifier: "cellSegue", sender: nil)
     }
   
-       // セルが削除が可能なことを伝えるメソッド
-
+    
+    
+    /*
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath)-> UITableViewCell.EditingStyle {
         
         return .delete
         
     }
+ 
+ */
+    // セルが削除が可能なことを伝えるメソッド
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath)-> UITableViewCell.EditingStyle {
+        return .delete
+    }
+     
+
+   
     
-    
-    func tableview (_ tableView: UITableView,commit editingStyle:UITableViewCell.EditingStyle,forRowAt indexPath:IndexPath){
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,forRowAt indexPath:IndexPath){
         
         if editingStyle == .delete{
             //削除するタスクを取得する
@@ -97,8 +107,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 
             // データベースから削除する
             try! realm.write {
-                self.realm.delete(self.taskArray[ indexPath.row])
-                tableView.deleteRows(at: [ indexPath], with: .fade)
+                self.realm.delete(self.taskArray[indexPath.row])
+                tableView.deleteRows(at: [indexPath], with: .fade)
                 
             }
             
@@ -109,7 +119,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                               print(request)
                               print("---------------/")
                           }
-                      }
+            }
 
             
         }
